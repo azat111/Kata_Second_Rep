@@ -15,16 +15,12 @@ public class UserDaoHibernateImpl implements UserDao {
     private SessionFactory sf = Util.getSessionFactory();
     private Transaction transaction = null;
 
-    public UserDaoHibernateImpl() {
-
-    }
-
+    public UserDaoHibernateImpl() {}
 
     @Override
     public void createUsersTable() {
         try (Session session = sf.openSession()) {
             transaction = session.beginTransaction();
-
             String sql = "CREATE TABLE IF NOT EXISTS User\n" +
                     "(\n" +
                     "    id       INT NOT NULL AUTO_INCREMENT,\n" +
@@ -43,7 +39,6 @@ public class UserDaoHibernateImpl implements UserDao {
     public void dropUsersTable() {
         try (Session session = sf.openSession()) {
             transaction = session.beginTransaction();
-
             String sql = "DROP TABLE IF EXISTS user";
             Query query = session.createSQLQuery(sql);
             query.executeUpdate();
@@ -55,10 +50,8 @@ public class UserDaoHibernateImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         try (Session session = sf.openSession()) {
             transaction = session.beginTransaction();
-
             User user = new User(name, lastName, age);
             session.save(user);
-
             transaction.commit();
         }
     }
@@ -67,9 +60,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void removeUserById(long id) {
         try (Session session = sf.openSession()) {
             transaction = session.beginTransaction();
-
             User user = session.get(User.class, id);
-
             session.delete(user);
             transaction.commit();
         }
@@ -80,9 +71,7 @@ public class UserDaoHibernateImpl implements UserDao {
         List<User> userList = new ArrayList<User>();
         try (Session session = sf.openSession()) {
             transaction = session.beginTransaction();
-
             userList = session.createQuery("FROM User").getResultList();
-
             transaction.commit();
         }
         return userList;
@@ -93,13 +82,10 @@ public class UserDaoHibernateImpl implements UserDao {
         List<User> userList = new ArrayList<User>();
         try (Session session = sf.openSession()) {
             transaction = session.beginTransaction();
-
             userList = session.createQuery("FROM User").getResultList();
-
             for (User user : userList) {
                 session.delete(user);
             }
-
             transaction.commit();
         }
     }
